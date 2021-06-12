@@ -1,29 +1,37 @@
 package praktikum.mensa;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 public class Kasse {
-    public Queue hungry_students;
-    String name;
-    int counter;
-    private ReentrantLock mutex_S;
+    private final String name;
+    private final Queue consumerQueue;
+    private final Thread thread;
 
-    Kasse(String name) {
+    public Kasse(String name) {
         this.name = name;
-        mutex_S = new ReentrantLock();
+        consumerQueue = new Queue(10);
+        thread = new Thread(() -> {
+            while (true) {
+                try {
+                    consumerQueue.serve();
+                } catch (InterruptedException e) {
+                    System.err.println(this.name + " stop");
+                    return;
+                }
+            }
+        });
+        thread.start();
     }
 
-    public Queue getHungry_students() {
-        return hungry_students;
+    public int queueLength() throws InterruptedException {
+        return consumerQueue.size();
     }
 
-    public void serviceStudent(Student student) throws InterruptedException {
-        student.pay
-
-
+    public void enter(Student s) throws InterruptedException {
+        consumerQueue.enter(s);
     }
 
-
+    public void interrupt() {
+        thread.interrupt();
+    }
 }
 
 //public class Kasse {

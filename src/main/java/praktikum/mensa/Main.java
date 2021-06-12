@@ -1,27 +1,39 @@
 package praktikum.mensa;
 
-import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
-
-
     public static void main(String[] args) {
-        int num_students = 20;
+        var numStudents = 20;
         var mensa = new Mensa(3);
-        var students = new LinkedList<Student>();
+        var students = createStudents(numStudents, mensa);
 
-        for (int i = 1; i <= num_students; i++) {
-            var s = new Student(mensa, "Student " + i);
-            students.add(s);
-        }
+        pauseMainThread();
+        System.err.println("Main stop");
+        interruptAllThreads(mensa, students);
+    }
+
+    static List<Student> createStudents(int numStudents, Mensa mensa) {
+        return IntStream
+                .range(0, numStudents)
+                .boxed()
+                .map(i -> new Student(mensa, "Student " + i, 3000))
+                .collect(Collectors.toList());
+    }
+
+    static void pauseMainThread() {
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
         }
-        System.err.println("stop");
-        for (var s: students) {
-            s.interrupt();
-        }
     }
 
+    static void interruptAllThreads(Mensa mensa, List<Student> students) {
+        for (var s : students) {
+            s.interrupt();
+        }
+        mensa.interrupt();
+    }
 }

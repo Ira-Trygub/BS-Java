@@ -1,28 +1,50 @@
 package praktikum.mensa;
 
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Mensa {
-    LinkedList<Kasse> all_kasse;
+    private final List<Kasse> allKasse;
 
-    Mensa(int num_kasse) {
+    public Mensa(int numKasse) {
+        allKasse =
+                IntStream
+                        .range(0, numKasse)
+                        .boxed()
+                        .map(i -> new Kasse("Kasse" + i))
+                        .collect(Collectors.toList());
     }
-    public LinkedList<Kasse> createKasse(int num) {
-        for (int i = 0; i < num; i++) {
-           Kasse k = new Kasse("Kasse" +i );
-           all_kasse.add(k);
+
+    public void enter(Student s) throws InterruptedException {
+        final boolean[] interrupted = {false};
+        allKasse
+                .stream()
+                .min(Comparator.comparing(k -> {
+                    try {
+                        return k.queueLength();
+                    } catch (InterruptedException e) {
+                        interrupted[0] = true;
+                        return 0;
+                    }
+                }))
+                .ifPresent(k -> {
+                    try {
+                        k.enter(s);
+                    } catch (InterruptedException e) {
+                        interrupted[0] = true;
+                    }
+                });
+        if (interrupted[0]) throw new InterruptedException();
+    }
+
+    public void interrupt() {
+        for (var k : allKasse) {
+            k.interrupt();
         }
-        return all_kasse;
     }
-
-//    Kasse getMinKasse() {
-//        all_kasse.sort(Comparator.comparing(Kasse::getHungry_students))
-//
-//}
-
 }
-
 
 //public class Mensa {
 //    int kasse_num;
@@ -52,7 +74,6 @@ public class Mensa {
 //            producerList.add(current);
 //            current.start();
 //        }
-
 
 
 //

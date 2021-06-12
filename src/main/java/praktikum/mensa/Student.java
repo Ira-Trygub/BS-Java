@@ -1,22 +1,29 @@
 package praktikum.mensa;
-import java.lang.*;
 
-public class Student {
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
-    Mensa mensa;
-    String name;
-    Thread thread;
+public class Student implements Consumer {
+    private final Mensa mensa;
+    private final String name;
+    private final long maxIdleMillis;
+    private final Thread thread;
+    private final ReentrantLock lock;
+    private final Condition inQueue;
 
-    Student(Mensa mensa, String s) {
+    public Student(Mensa mensa, String name, long maxIdleMillis) {
         this.mensa = mensa;
-        name = s;
+        this.name = name;
+        this.maxIdleMillis = maxIdleMillis;
+        lock = new ReentrantLock();
+        inQueue = lock.newCondition();
         thread = new Thread(() -> { //даём потоку работу через лямбда функцию () -> {}
-            while (true) {   //while (!isInterrupted()) {
+            while (true) {   // while (!isInterrupted()) {
                 try {
-                    enter(); //зайти в столовую
+                    enterAndPay(); // зайти в столовую
                     // enter will be locked until we can pay
-                    pay(); //заплатить на кассе
-                    eat(); //уйти кушать
+                    // payment will be done in Kasse thread
+                    eat(); // уйти кушать
                 } catch (InterruptedException e) {
                     System.err.println(this.name + " stop");
                     return;
@@ -27,29 +34,37 @@ public class Student {
         thread.start();
     }
 
-    void interrupt() {
+    public void interrupt() {
         thread.interrupt();
     }
 
-//    void runLoop() {
-//        while (true) {
-//            enter();
-//            // enter will be locked until we can pay
-//            pay();
-//            eat();
-//        }
-//    }
-
-    private void enter() {
+    private void enterAndPay() throws InterruptedException {
+        mensa.enter(this);
     }
 
-    public void pay() {
+    public void awaitPayment() throws InterruptedException {
+        System.err.println(name + " awaitPayment");
+        lock.lockInterruptibly();
+        try {
+            inQueue.await();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void pay() throws InterruptedException {
         System.err.println("Student " + name + " is paying!");
+        lock.lockInterruptibly();
+        try {
+            inQueue.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void eat() throws InterruptedException {
-        System.err.println(this.name + " eating");
-        Thread.sleep(3000);
+        System.err.println(name + " eating");
+        Thread.sleep((long) (maxIdleMillis * Math.random()));
     }
 }
 
