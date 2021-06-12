@@ -1,15 +1,26 @@
 package praktikum.mensa;
 
-public class Kasse  {
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Kasse {
     public Queue hungry_students;
     String name;
+    int counter;
+    private ReentrantLock mutex_S;
+
+    Kasse(String name) {
+        this.name = name;
+        mutex_S = new ReentrantLock();
+    }
 
     public Queue getHungry_students() {
         return hungry_students;
     }
 
-    Kasse(String name) {
-        this.name = name;
+    public void serviceStudent(Student student) throws InterruptedException {
+        student.pay
+
+
     }
 
 

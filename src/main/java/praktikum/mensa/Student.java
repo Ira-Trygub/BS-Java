@@ -2,6 +2,7 @@ package praktikum.mensa;
 import java.lang.*;
 
 public class Student {
+
     Mensa mensa;
     String name;
     Thread thread;
@@ -12,10 +13,10 @@ public class Student {
         thread = new Thread(() -> { //даём потоку работу через лямбда функцию () -> {}
             while (true) {   //while (!isInterrupted()) {
                 try {
-                    enter();
+                    enter(); //зайти в столовую
                     // enter will be locked until we can pay
-                    pay();
-                    eat();
+                    pay(); //заплатить на кассе
+                    eat(); //уйти кушать
                 } catch (InterruptedException e) {
                     System.err.println(this.name + " stop");
                     return;
@@ -42,7 +43,8 @@ public class Student {
     private void enter() {
     }
 
-    private void pay() {
+    public void pay() {
+        System.err.println("Student " + name + " is paying!");
     }
 
     private void eat() throws InterruptedException {
