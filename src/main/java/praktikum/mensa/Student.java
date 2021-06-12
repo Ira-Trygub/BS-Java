@@ -1,4 +1,5 @@
 package praktikum.mensa;
+import java.lang.*;
 
 public class Student {
     Mensa mensa;
@@ -9,7 +10,7 @@ public class Student {
         this.mensa = mensa;
         name = s;
         thread = new Thread(() -> { //даём потоку работу через лямбда функцию () -> {}
-            while (true) {
+            while (true) {   //while (!isInterrupted()) {
                 try {
                     enter();
                     // enter will be locked until we can pay

@@ -30,7 +30,7 @@ public class SimRace {
             }
         }
 
-        cars.sort(Comparator.comparing(Car:: getTimer));
+        cars.sort(Comparator.comparing((Car::getTimer))); // cars.sort(Comparator.comparing((car -> { return car.getTimer();})));
         for (Car c: cars) {
             System.out.println("Platz:" + cars.indexOf(c) + " Wagen " + c.myName + " Zeit: " + c.timer);
         }

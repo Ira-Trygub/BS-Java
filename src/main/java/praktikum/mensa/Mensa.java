@@ -1,5 +1,6 @@
 package praktikum.mensa;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class Mensa {
@@ -7,6 +8,19 @@ public class Mensa {
 
     Mensa(int num_kasse) {
     }
+    public LinkedList<Kasse> createKasse(int num) {
+        for (int i = 0; i < num; i++) {
+           Kasse k = new Kasse("Kasse" +i );
+           all_kasse.add(k);
+        }
+        return all_kasse;
+    }
+
+//    Kasse getMinKasse() {
+//        all_kasse.sort(Comparator.comparing(Kasse::getHungry_students))
+//
+//}
+
 }
 
 

@@ -1,8 +1,16 @@
 package praktikum.mensa;
 
 public class Kasse  {
-    private Queue hungry_students;
+    public Queue hungry_students;
+    String name;
 
+    public Queue getHungry_students() {
+        return hungry_students;
+    }
+
+    Kasse(String name) {
+        this.name = name;
+    }
 
 
 }
