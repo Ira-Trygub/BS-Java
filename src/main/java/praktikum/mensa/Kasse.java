@@ -7,7 +7,7 @@ public class Kasse {
 
     public Kasse(String name) {
         this.name = name;
-        consumerQueue = new Queue(10);
+        consumerQueue = new Queue(3, "queue-" + name);
         thread = new Thread(() -> {
             while (true) {
                 try {
@@ -21,7 +21,12 @@ public class Kasse {
         thread.start();
     }
 
-    public int queueLength() throws InterruptedException {
+    @Override
+    public String toString() {
+        return "Kasse(" + name + ")";
+    }
+
+    public int queueLength() {
         return consumerQueue.size();
     }
 

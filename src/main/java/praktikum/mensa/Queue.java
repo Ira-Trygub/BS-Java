@@ -6,56 +6,62 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Queue {
     private final int maxQsize;
+    private final String name;
     private final java.util.Queue<Consumer> javaQueue;
-    private final ReentrantLock lock;
+    private final ReentrantLock queueLock;
     private final Condition notFull;
     private final Condition notEmpty;
 
-    public Queue(int maxQsize) {
+    public Queue(int maxQsize, String name) {
         this.maxQsize = maxQsize;
+        this.name = name;
         javaQueue = new LinkedList<>();
-        lock = new ReentrantLock();
-        notFull = lock.newCondition();
-        notEmpty = lock.newCondition();
+        queueLock = new ReentrantLock();
+        notFull = queueLock.newCondition();
+        notEmpty = queueLock.newCondition();
     }
 
-    public int size() throws InterruptedException {
+    public int size() {
         int res;
-        lock.lockInterruptibly();
+        queueLock.lock();
         try {
             res = javaQueue.size();
         } finally {
-            lock.unlock();
+            queueLock.unlock();
         }
         return res;
     }
 
     public void enter(Consumer consumer) throws InterruptedException {
-        lock.lockInterruptibly();
+        queueLock.lockInterruptibly();
         try {
-            while (javaQueue.size() == maxQsize)
+            while (javaQueue.size() == maxQsize) {
+                System.err.println(name + " is full");
                 notFull.await();
+            }
 
             javaQueue.add(consumer);
+            System.err.println(name + " has size " + javaQueue.size());
             notEmpty.signal();
         } finally {
-            lock.unlock();
+            queueLock.unlock();
         }
-        consumer.awaitPayment();
     }
 
     public void serve() throws InterruptedException {
-        lock.lockInterruptibly();
+        queueLock.lockInterruptibly();
         try {
-            while (javaQueue.size() == 0)
+            while (javaQueue.size() == 0) {
+                System.err.println(name + " is empty");
                 notEmpty.await();
+            }
 
             var consumer = javaQueue.remove();
             consumer.pay();
 
             notFull.signal();
         } finally {
-            lock.unlock();
+            queueLock.unlock();
         }
     }
 }

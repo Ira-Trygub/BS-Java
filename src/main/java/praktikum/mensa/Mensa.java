@@ -13,7 +13,7 @@ public class Mensa {
                 IntStream
                         .range(0, numKasse)
                         .boxed()
-                        .map(i -> new Kasse("Kasse" + i))
+                        .map(i -> new Kasse("kasse-" + i))
                         .collect(Collectors.toList());
     }
 
@@ -21,16 +21,10 @@ public class Mensa {
         final boolean[] interrupted = {false};
         allKasse
                 .stream()
-                .min(Comparator.comparing(k -> {
-                    try {
-                        return k.queueLength();
-                    } catch (InterruptedException e) {
-                        interrupted[0] = true;
-                        return 0;
-                    }
-                }))
+                .min(Comparator.comparing(Kasse::queueLength))
                 .ifPresent(k -> {
                     try {
+                        System.err.println(s + " go to " + k);
                         k.enter(s);
                     } catch (InterruptedException e) {
                         interrupted[0] = true;

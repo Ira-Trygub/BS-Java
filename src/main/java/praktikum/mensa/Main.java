@@ -19,7 +19,7 @@ public class Main {
         return IntStream
                 .range(0, numStudents)
                 .boxed()
-                .map(i -> new Student(mensa, "Student " + i, 3000))
+                .map(i -> new Student(mensa, "student-" + i, 1000))
                 .collect(Collectors.toList());
     }
 
