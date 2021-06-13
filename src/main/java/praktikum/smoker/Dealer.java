@@ -4,13 +4,25 @@ import java.util.ArrayList;
 
 public class Dealer {
     String name;
+    Table table;
 
-    Dealer(String name) {
+    Dealer(String name, Table table) {
         this.name = name;
+        this.table = table;
+        Thread thread = new Thread(()->{
+            while (true) {
+                try {
+                    putStuff(table);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 
 
-    ArrayList<Stuff> giveStuff() {
+    public ArrayList<Stuff> giveStuff() {
         var dealerStuffList = Table.stuffList;
         int ran = (int) ((Math.random() * 2));  // int ran = (int) ((Math.random() * (2 - 0)) + 0);
         dealerStuffList.remove(ran);
@@ -18,12 +30,14 @@ public class Dealer {
     }
 
 
-    private void putStuff(Table table) throws InterruptedException {
+    public void putStuff(Table table) throws InterruptedException {
         while (table.tableList.size() == table.deal_max_num) {
+            System.err.println(name + "is waiting");
             wait();
         }
-        this.giveStuff();
-        System.err.println();
+        ArrayList<Stuff> dealerStuffList = this.giveStuff();
+        table.tableList.add(dealerStuffList);
+        System.err.println("Do you need " + dealerStuffList + "?");
         this.notifyAll();
     }
 

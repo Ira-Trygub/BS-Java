@@ -1,20 +1,59 @@
 package praktikum.smoker;
 
+import java.util.ArrayList;
+
 public class Smoker {
     String name;
+    Table table;
+
+    Smoker(String name, Table table) {
+        this.name = name;
+        this.table = table;
+
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    getStuffSmoke(table);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+//    private void getStuffSmoke() throws InterruptedException {
+//            try {
+//            mensa.enter(this);
+//            System.err.println(name + " waiting in queue");
+//            inQueue.await();
+//            System.err.println(name + " can eat");
+//        } finally {
+//            studentLock.unlock();
+//        }
+//    }
 
 
-
-
-    private void putStuff(Table table) throws InterruptedException {
-        while(table.tableList.size() ==0){
+    private void getStuffSmoke(Table table) throws InterruptedException {
+        Stuff elem = randomStuff();
+        while ((table.tableList.size() == 0) && !(table.stuffList).equals(table.tableList.get(0).add(elem)) || !(table.stuffList).equals(table.tableList.get(1).add(elem))) {
             wait();
         }
         smoke();
+
         notifyAll();
     }
 
-    private void smoke() {
-        System.err.println(name + "is smoking" +  "~".repeat((int) ((Math.random() * (20 - 2)) + 2)));
+    private Stuff randomStuff() {
+        var ind = (int) ((Math.random() * (20 - 2)) + 2);
+        Stuff elem = Table.stuffList.get(ind);
+        return elem;
+    }
+
+    private void smoke() throws InterruptedException {
+        System.err.println(name + "is smoking" + "~".repeat((int) ((Math.random() * (20 - 2)) + 2)));
+        Thread.sleep(100);
+
+
     }
 }
