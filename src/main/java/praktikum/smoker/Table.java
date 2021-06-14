@@ -6,31 +6,49 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Table {
-    LinkedList<ArrayList<Stuff>> tableList; // списков эрреев от диллеров
-    LinkedList<Dealer> dealerList;
-    LinkedList<Smoker> smokerList;
-    int deal_max_num; //максимальное количество диллеров
-    int smo_max_num; //максимальное количество курильщиков
-    static ArrayList<Stuff> stuffList; // бумага, табак, спички вместе
+    private final List<Stuff> items;
 
     public Table() {
-
-        var tableList = new LinkedList();
-        ArrayList<Stuff> stuffList = new ArrayList<Stuff>() {{ add(new Papier()); add( new Tabak()); add( new Streichhoelzer());}};
+        items = new LinkedList<>();
     }
 
-    public int getDeal_max_num() {
-        return deal_max_num;
+    public synchronized void acquireStuff(List<Stuff> need) throws InterruptedException {
+        while (!items.containsAll(need)) {
+            wait();
+        }
+        items.removeAll(need);
+        notifyAll();
+
     }
 
-    public int getSmo_max_num() {
-        return smo_max_num;
-    }
+    public synchronized void offer(List<Stuff> newItems) {
 
-    public ArrayList<Stuff> getStuffList() {
-        return stuffList;
     }
+}
 
+//    LinkedList<Dealer> dealerList;
+//    LinkedList<Smoker> smokerList;
+//    int deal_max_num; //максимальное количество диллеров
+//    int smo_max_num; //максимальное количество курильщиков
+//    static ArrayList<Stuff> stuffList; // бумага, табак, спички вместе
+//
+//    public Table() {
+//
+//        var tableList = new LinkedList();
+//        ArrayList<Stuff> stuffList = new ArrayList<Stuff>() {{ add(new Papier()); add( new Tabak()); add( new Streichhoelzer());}};
+//    }
+//
+//    public int getDeal_max_num() {
+//        return deal_max_num;
+//    }
+//
+//    public int getSmo_max_num() {
+//        return smo_max_num;
+//    }
+//
+//    public ArrayList<Stuff> getStuffList() {
+//        return stuffList;
+//    }
 
 
 //    public synchronized void putStuff(Dealer dealer) throws InterruptedException {
@@ -44,4 +62,4 @@ public class Table {
 //
 //    }
 
-}
+//}

@@ -1,9 +1,7 @@
-
-
-
 package praktikum.smoker;
 
-public interface Stuff {
+enum Stuff {
+    TABAK,
+    PAPIER,
+    STREICHHOELZER
 }
-
-

@@ -1,25 +1,37 @@
 package praktikum.smoker;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Smoker {
-    String name;
-    Table table;
+    private final String name;
+    private final Table table;
+    private final Thread thread;
+    private final List<Stuff> need;
 
-    Smoker(String name, Table table) {
+    public Smoker(String name, List<Stuff> need, Table table) {
         this.name = name;
         this.table = table;
+        this.need = need;
 
-        Thread thread = new Thread(() -> {
+        thread = new Thread(() -> {
             while (true) {
                 try {
-                    getStuffSmoke(table);
+                    table.acquireStuff(need);
+                    Thread.sleep(1000);
+//                    getStuffSmoke(table);
+
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    return;
                 }
             }
         });
         thread.start();
+    }
+
+    public void interrupt() {
+        thread.interrupt();
     }
 
 //    private void getStuffSmoke() throws InterruptedException {
@@ -34,26 +46,26 @@ public class Smoker {
 //    }
 
 
-    private void getStuffSmoke(Table table) throws InterruptedException {
-        Stuff elem = randomStuff();
-        while ((table.tableList.size() == 0) && !(table.stuffList).equals(table.tableList.get(0).add(elem)) || !(table.stuffList).equals(table.tableList.get(1).add(elem))) {
-            wait();
-        }
-        smoke();
-
-        notifyAll();
-    }
-
-    private Stuff randomStuff() {
-        var ind = (int) ((Math.random() * (20 - 2)) + 2);
-        Stuff elem = Table.stuffList.get(ind);
-        return elem;
-    }
-
-    private void smoke() throws InterruptedException {
-        System.err.println(name + "is smoking" + "~".repeat((int) ((Math.random() * (20 - 2)) + 2)));
-        Thread.sleep(100);
-
-
-    }
+//    private void getStuffSmoke(Table table) throws InterruptedException {
+//        Stuff elem = randomStuff();
+//        while ((table.tableList.size() == 0) && !(table.stuffList).equals(table.tableList.get(0).add(elem)) || !(table.stuffList).equals(table.tableList.get(1).add(elem))) {
+//            wait();
+//        }
+//        smoke();
+//
+//        notifyAll();
+//    }
+//
+//    private Stuff randomStuff() {
+//        var ind = (int) ((Math.random() * (20 - 2)) + 2);
+//        Stuff elem = Table.stuffList.get(ind);
+//        return elem;
+//    }
+//
+//    private void smoke() throws InterruptedException {
+//        System.err.println(name + "is smoking" + "~".repeat((int) ((Math.random() * (20 - 2)) + 2)));
+//        Thread.sleep(100);
+//
+//
+//    }
 }
