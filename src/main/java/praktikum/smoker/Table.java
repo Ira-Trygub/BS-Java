@@ -7,21 +7,31 @@ import java.util.LinkedList;
 
 public class Table {
     private final List<Stuff> items;
+    private final int itemMaxNumber;
 
-    public Table() {
+    public Table(int itemMaxNumber) {
+
         items = new LinkedList<>();
+        this.itemMaxNumber = itemMaxNumber;
     }
 
     public synchronized void acquireStuff(List<Stuff> need) throws InterruptedException {
         while (!items.containsAll(need)) {
             wait();
+
         }
         items.removeAll(need);
         notifyAll();
 
     }
 
-    public synchronized void offer(List<Stuff> newItems) {
+    public synchronized void offer(List<Stuff> newItems) throws InterruptedException {
+        while (items.size() == itemMaxNumber) {
+            wait();
+        }
+        items.addAll(newItems);
+        notifyAll();
+
 
     }
 }

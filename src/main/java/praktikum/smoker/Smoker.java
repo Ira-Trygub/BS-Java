@@ -18,9 +18,11 @@ public class Smoker {
         thread = new Thread(() -> {
             while (true) {
                 try {
+                    System.err.println(name + "  is waiting" + ".".repeat((int) ((Math.random() * (20 - 2)) + 2)));
                     table.acquireStuff(need);
-                    Thread.sleep(1000);
-//                    getStuffSmoke(table);
+                    System.err.println(name + "  is smoking" + "~".repeat((int) ((Math.random() * (50 - 2)) + 2)));
+                    Thread.sleep((int) ((Math.random() * (1000 - 100)) + 100));
+                    System.err.println(name + "  finished smoking!");
 
                 } catch (InterruptedException e) {
                     return;

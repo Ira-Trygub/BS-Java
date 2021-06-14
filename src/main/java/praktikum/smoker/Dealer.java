@@ -1,5 +1,6 @@
 package praktikum.smoker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,14 +29,16 @@ public class Dealer {
         thread.start();
     }
 
-    public void putStuff(Table table) {
-        int ran = (int) ((Math.random() * 2));
-        List<Stuff> newItems = Arrays.asList(Stuff.values());
+    public void putStuff(Table table) throws InterruptedException {
+        int ran = (int) ((Math.random() * 3));
+        List<Stuff> newItems = new ArrayList<Stuff>(Arrays.asList(Stuff.values()));
         newItems.remove(ran);
         table.offer(newItems);
-
     }
 
+    public void interrupt() {
+        thread.interrupt();
+    }
 }
 
 
