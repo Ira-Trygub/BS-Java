@@ -17,20 +17,15 @@ public class Mensa {
                         .collect(Collectors.toList());
     }
 
-    public void enter(Student s) throws InterruptedException {
-        final boolean[] interrupted = {false};
-        allKasse
-                .stream()
-                .min(Comparator.comparing(Kasse::queueLength))
-                .ifPresent(k -> {
-                    try {
-                        System.err.println(s + " go to " + k);
-                        k.enter(s);
-                    } catch (InterruptedException e) {
-                        interrupted[0] = true;
-                    }
-                });
-        if (interrupted[0]) throw new InterruptedException();
+    public Kasse chooseKasse(Student s) throws InterruptedException {
+Kasse minKasse = allKasse.get(0);
+     for (int i = 0; i< allKasse.size(); i++) {
+         if (allKasse.get(i).queueLength() < minKasse ) {
+
+         }
+     }
+
+
     }
 
     public void interrupt() {
@@ -40,40 +35,8 @@ public class Mensa {
     }
 }
 
-//public class Mensa {
-//    int kasse_num;
-//    int stud_num;
-//    private LinkedList<Kasse> allKasse;
-//    private LinkedList<Student> allStudents;
-//
-//    Mensa(int k,int s) {
-//        kasse_num = k;
-//        stud_num = s;
-//
-//        public void startSimulation() {
-//            allKasse = new LinkedList<Kasse>();
-//            allStudents = new LinkedList<Student>();
-//        }
-//        for (int i = 1; i <= s; i++) {
-//            Student current = new Student();
-//            current.setName("Verbraucher " + i);
-//            consumerList.add(current);
-//            current.start();
-//        }
-//
-//        // Erzeuger - Threads erzeugen
-//        for (int i = 1; i <= NO_PRODUCER; i++) {
-//            Producer current = new Producer(buffer);
-//            current.setName("Erzeuger " + i);
-//            producerList.add(current);
-//            current.start();
-//        }
-
-
-//
-//
-//    }
-//
-//
-//
-//}
+//return kasse
+//pay Methode in Kasse mit eigenem kassenLock
+//in Kasse Zäxhler, wir viel St
+//Zähler im Enter Methode erhöhen
+//Methode

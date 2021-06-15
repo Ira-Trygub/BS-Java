@@ -30,6 +30,15 @@ public class MensaMain {
         }
     }
 
+
+    static void startAllThreads(Mensa mensa, List<Student> students) {
+        for (var s : students) {
+            s.interrupt();
+        }
+        mensa.interrupt();
+    }
+
+
     static void interruptAllThreads(Mensa mensa, List<Student> students) {
         for (var s : students) {
             s.interrupt();

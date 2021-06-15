@@ -14,6 +14,7 @@ public class Table {
         items = new LinkedList<>();
         this.itemMaxNumber = itemMaxNumber;
     }
+//prüfen ob Tisch leer gemacht ist
 
     public synchronized void acquireStuff(List<Stuff> need) throws InterruptedException {
         while (!items.containsAll(need)) {
