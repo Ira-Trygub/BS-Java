@@ -1,6 +1,5 @@
 package praktikum.mensa;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -33,9 +32,3 @@ public class Mensa {
         }
     }
 }
-
-//return kasse
-//pay Methode in Kasse mit eigenem kassenLock
-//in Kasse Zäxhler, wir viel St
-//Zähler im Enter Methode erhöhen
-//Methode
