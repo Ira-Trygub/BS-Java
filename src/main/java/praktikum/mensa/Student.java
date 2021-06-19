@@ -13,11 +13,6 @@ public class Student extends Thread {
     }
 
     @Override
-    public String toString() {
-        return "Student(" + getName() + ")";
-    }
-
-    @Override
     public void run() {
         while (!isInterrupted()) {   // while (!isInterrupted()) {
             try {
