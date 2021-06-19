@@ -2,7 +2,6 @@ package praktikum.mensa;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,9 +17,10 @@ public class Mensa {
                         .collect(Collectors.toList());
     }
 
-    public Optional<Kasse> chooseKasse() { // TODO: 19.06.21 lock on all Kasses before chooseKasse
+    public Kasse chooseKasse() { // TODO: 19.06.21 lock on all Kasses before chooseKasse
         return allKasse
                 .stream()
-                .min(Comparator.comparing(Kasse::getQueueLength));
+                .min(Comparator.comparing(Kasse::getQueueLength))
+                .orElseThrow(() -> new RuntimeException("No cashpoints available!"));
     }
 }

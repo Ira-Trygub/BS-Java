@@ -5,6 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Student extends Thread {
     private final Mensa mensa;
     private final long maxIdleMillis;
+
+    // TODO: 19.06.21 as we have Mensa, move lock there
     private static ReentrantLock studentLock; // eine Sperre für alle
 
     public Student(Mensa mensa, String name, long maxIdleMillis) {
@@ -27,12 +29,13 @@ public class Student extends Thread {
         }
     }
 
-    private void buy() throws InterruptedException {
+    private void buy() throws InterruptedException { // most important things happen here
         studentLock.lockInterruptibly();
-        var kasse = mensa.chooseKasse()
-                .orElseThrow(() -> new RuntimeException("No cashpoints available!"));
+        var kasse = mensa.chooseKasse();
         kasse.increaseQueueLength();
         studentLock.unlock();
+
+        kasse.pay(this);
 
         studentLock.lockInterruptibly();
         kasse.decreaseQueueLength();
