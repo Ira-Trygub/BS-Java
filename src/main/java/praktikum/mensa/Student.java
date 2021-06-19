@@ -1,13 +1,11 @@
 package praktikum.mensa;
 
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Student extends Thread {
-    //    private final Thread thread;
-    private static ReentrantLock studentLock;//eine Sperre für alle
+    private static ReentrantLock studentLock; // eine Sperre für alle
     private final Mensa mensa;
-//    private final String name;
+    //    private final String name;
     private final long maxIdleMillis;
     Kasse selectedKasse;
 //    private final Condition inQueue;
@@ -20,9 +18,7 @@ public class Student extends Thread {
         studentLock = new ReentrantLock();
 //        studentLock = new ReentrantLock();
 //        inQueue = studentLock.newCondition();
-//        thread = new Thread(() -> { //даём потоку работу через лямбда функцию () -> {}
-
-
+//        thread = new Thread(() -> { // даём потоку работу через лямбда функцию () -> {}
     }
 
     @Override
@@ -52,7 +48,7 @@ public class Student extends Thread {
         studentLock.lockInterruptibly();
         try {
             selectedKasse = mensa.chooseKasse(this);
-            System.err.println(getName()+ " is in queue on Kasse " + selectedKasse.getName());
+            System.err.println(getName() + " is in queue on Kasse " + selectedKasse.getName());
             selectedKasse.increaseQueueLength();
             System.err.println(getName() + " can eat");
         } finally {
