@@ -1,12 +1,15 @@
 package praktikum.mensa;
 
-public class Kasse {
-    private final String name;
+import java.util.concurrent.locks.ReentrantLock;
 
-     int counter;
+public class Kasse {
+    private final ReentrantLock KassenLock;
+    public String name;
+    int counter;
 
     public Kasse(String name) {
         this.name = name;
+        KassenLock = new ReentrantLock(true);
         counter = 0;
     }
 
@@ -25,19 +28,25 @@ public class Kasse {
     public void decreaseQueueLength() throws InterruptedException {
         counter--; //mit studentenLock im Student aufrufen
     }
-    public void pay() throws InterruptedException {
-        KassenLock.lockInterruptibly();
-        try {
-            System.err.println(name + " is paying!");
-            Thread.sleep(1000);
-            System.err.println(name + " payed!");
-            inQueue.signal();
-        } finally {
-            studentLock.unlock();
-        }
+//    public void pay() throws InterruptedException {
+//        KassenLock.lockInterruptibly();
+//        try {
+//            System.err.println(name + " is paying!");
+//            Thread.sleep(1000);
+//            System.err.println(name + " payed!");
+//            inQueue.signal();
+//        } finally {
+//            studentLock.unlock();
+//        }
+//    }
+
+
+    public void interrupt() {
     }
 
-
+    public String getName() {
+        return name;
+    }
 
 }
 
