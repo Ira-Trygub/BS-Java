@@ -47,18 +47,15 @@ public class Student extends Thread {
     private void enter() throws InterruptedException {
         studentLock.lockInterruptibly();
         try {
-            selectedKasse = mensa.chooseKasse();
-            System.err.println(getName() + " is in queue on Kasse " + selectedKasse.getName());
-            selectedKasse.increaseQueueLength();
-            System.err.println(getName() + " can eat");
+            mensa.chooseKasse().ifPresent(selectedKasse -> {
+                System.err.println(getName() + " is in queue on Kasse " + selectedKasse.getName());
+                selectedKasse.increaseQueueLength();
+                System.err.println(getName() + " can eat");
+            });
         } finally {
             studentLock.unlock();
         }
     }
-
-//public void interrupt() {
-//        Thread.interrupt();
-//}
 
     private void eat() {
         System.err.println(getName() + " eating");

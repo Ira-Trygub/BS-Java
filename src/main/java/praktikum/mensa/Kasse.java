@@ -2,7 +2,7 @@ package praktikum.mensa;
 
 public class Kasse {
     private final String name;
-    private int queueLength;
+    private int queueLength; // not thread-safe make it atomic!
 
     public Kasse(String name) {
         this.name = name;
