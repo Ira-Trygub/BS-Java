@@ -4,11 +4,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Student extends Thread {
     private final Mensa mensa;
+    private final long maxIdleMillis;
     private static ReentrantLock studentLock; // eine Sperre für alle
 
-    public Student(Mensa mensa, String name) {
+    public Student(Mensa mensa, String name, long maxIdleMillis) {
         super(name);
         this.mensa = mensa;
+        this.maxIdleMillis = maxIdleMillis;
         studentLock = new ReentrantLock();
     }
 
@@ -43,7 +45,8 @@ public class Student extends Thread {
         }
     }
 
-    private void eat() {
+    private void eat() throws InterruptedException {
         System.err.println(getName() + " eating");
+        Thread.sleep((long) (Math.random() * maxIdleMillis));
     }
 }
