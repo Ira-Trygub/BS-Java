@@ -13,18 +13,10 @@ public class MensaMain {
         var students = createStudents(20, mensa);
         startStudents(students);
 
-//        for (int i = 0; i < numStudents; i++) {
-//            students.get(i).run();
-//        }
-
         pauseMainThread();
-
-        students.forEach(Thread::interrupt);
-
 
         interruptAllThreads(mensa, students);
         System.err.println("Main stop");
-
     }
 
     static List<Student> createStudents(int numStudents, Mensa mensa) {
