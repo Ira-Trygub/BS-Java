@@ -40,10 +40,7 @@ public class MensaMain {
 
 
     static void interruptAllThreads(Mensa mensa, List<Student> students) {
-        for (var s : students) {
-            s.interrupt();
-        }
+        students.forEach(Thread::interrupt);
         mensa.interrupt();
-
     }
 }
