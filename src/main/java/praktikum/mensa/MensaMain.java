@@ -20,22 +20,11 @@ public class MensaMain {
     }
 
     static List<Student> createStudents(int numStudents, Mensa mensa) {
-        ArrayList<Student> students = new ArrayList<>();
-        for (int i = 0; i < numStudents; i++) {
-            Student s = new Student(mensa, "Student"+i, (int)(Math.random()*10000));
-            students.add( s);
-        }
-        return students;
+        return IntStream.range(0, numStudents)
+                .boxed()
+                .map(i -> new Student(mensa, "Student" + i, (int) (Math.random() * 10000)))
+                .collect(Collectors.toList());
     }
-
-//    static List<Student> createStudents(int numStudents, Mensa mensa) {
-//        return IntStream
-//                .range(0, numStudents)
-//                .boxed()
-//                .map(i -> new Student(mensa, "student-" + i, 1000))
-//                .collect(Collectors.toList());
-//    }
-
 
     static void pauseMainThread() {
         try {
