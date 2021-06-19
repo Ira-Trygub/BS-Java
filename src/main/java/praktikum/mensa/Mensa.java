@@ -1,5 +1,6 @@
 package praktikum.mensa;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -17,18 +18,9 @@ public class Mensa {
     }
 
     public Kasse chooseKasse() {
-        var minKasse = allKasse.get(0);
-        for (int i = 0; i < allKasse.size(); i++) {
-            if (allKasse.get(i).queueLength() < minKasse.queueLength()) {
-                minKasse = allKasse.get(i);
-            }
-        }
-        return minKasse;
-    }
-
-    public void interrupt() {
-        for (var k : allKasse) {
-            k.interrupt();
-        }
+        return allKasse
+                .stream()
+                .min(Comparator.comparing(Kasse::getQueueLength))
+                .get();
     }
 }

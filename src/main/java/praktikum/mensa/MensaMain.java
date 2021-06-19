@@ -13,7 +13,7 @@ public class MensaMain {
 
         pauseMainThread();
 
-        interruptAllThreads(mensa, students);
+        interruptAllThreads(students);
         System.err.println("Main stop");
     }
 
@@ -37,8 +37,7 @@ public class MensaMain {
     }
 
 
-    static void interruptAllThreads(Mensa mensa, List<Student> students) {
+    static void interruptAllThreads(List<Student> students) {
         students.forEach(Thread::interrupt);
-        mensa.interrupt();
     }
 }
