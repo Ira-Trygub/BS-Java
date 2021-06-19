@@ -20,7 +20,7 @@ public class MensaMain {
     static List<Student> createStudents(int numStudents, Mensa mensa) {
         return IntStream.range(0, numStudents)
                 .boxed()
-                .map(i -> new Student(mensa, "Student" + i, (int) (Math.random() * 10000)))
+                .map(i -> new Student(mensa, "Student" + i))
                 .collect(Collectors.toList());
     }
 

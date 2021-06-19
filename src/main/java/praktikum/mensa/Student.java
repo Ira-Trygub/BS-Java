@@ -3,22 +3,13 @@ package praktikum.mensa;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Student extends Thread {
-    private static ReentrantLock studentLock; // eine Sperre für alle
     private final Mensa mensa;
-    //    private final String name;
-    private final long maxIdleMillis;
-    Kasse selectedKasse;
-//    private final Condition inQueue;
+    private static ReentrantLock studentLock; // eine Sperre für alle
 
-    public Student(Mensa mensa, String name, long maxIdleMillis) {
+    public Student(Mensa mensa, String name) {
         super(name);
         this.mensa = mensa;
-//        this.name = name;
-        this.maxIdleMillis = maxIdleMillis;
         studentLock = new ReentrantLock();
-//        studentLock = new ReentrantLock();
-//        inQueue = studentLock.newCondition();
-//        thread = new Thread(() -> { // даём потоку работу через лямбда функцию () -> {}
     }
 
     @Override
