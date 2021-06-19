@@ -16,14 +16,10 @@ public class Student extends Thread {
 
     @Override
     public void run() {
-        while (!isInterrupted()) {   // while (!isInterrupted()) {
+        while (!isInterrupted()) {
             try {
-//                System.err.println(this.name + " wanna eat");
-                var k = enter();
-                exit(k);
-                // enter will be locked until we can pay
-                // payment will be done in Kasse thread
-                eat(); // уйти кушать
+                buy();
+                eat();
             } catch (InterruptedException e) {
                 System.err.println(getName() + " stop");
                 return; // more reliable than check isInterrupted()
@@ -31,29 +27,21 @@ public class Student extends Thread {
         }
     }
 
-    private Kasse enter() throws InterruptedException {
-        final Kasse[] k = {null};
+    private void buy() throws InterruptedException {
         studentLock.lockInterruptibly();
-        try {
-            mensa.chooseKasse().ifPresent(selectedKasse -> {
-                System.err.println(getName() + " is in queue on Kasse " + selectedKasse.getName());
-                selectedKasse.increaseQueueLength();
-                System.err.println(getName() + " can eat");
-                k[0] = selectedKasse;
-            });
-        } finally {
-            studentLock.unlock();
-        }
-        return k[0];
+        var kasse = mensa.chooseKasse()
+                .orElseThrow(() -> new RuntimeException("No cashpoints available!"));
+        kasse.increaseQueueLength();
+        studentLock.unlock();
+
+        studentLock.lockInterruptibly();
+        kasse.decreaseQueueLength();
+        studentLock.unlock();
     }
 
-    private void exit(Kasse kasse) throws InterruptedException {
-        studentLock.lockInterruptibly();
-        try {
-            kasse.decreaseQueueLength();
-        } finally {
-            studentLock.unlock();
-        }
+    public void pay() throws InterruptedException {
+        System.err.println(getName() + " paying");
+        Thread.sleep((long) (Math.random() * maxIdleMillis));
     }
 
     private void eat() throws InterruptedException {
