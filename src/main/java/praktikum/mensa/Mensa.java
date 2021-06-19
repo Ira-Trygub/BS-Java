@@ -16,7 +16,7 @@ public class Mensa {
                         .collect(Collectors.toList());
     }
 
-    public Kasse chooseKasse(Student s) {
+    public Kasse chooseKasse() {
         Kasse minKasse = allKasse.get(0);
         for (int i = 0; i < allKasse.size(); i++) {
             if (allKasse.get(i).queueLength() < minKasse.queueLength()) {

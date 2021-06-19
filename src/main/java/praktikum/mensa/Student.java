@@ -47,7 +47,7 @@ public class Student extends Thread {
     private void enter() throws InterruptedException {
         studentLock.lockInterruptibly();
         try {
-            selectedKasse = mensa.chooseKasse(this);
+            selectedKasse = mensa.chooseKasse();
             System.err.println(getName() + " is in queue on Kasse " + selectedKasse.getName());
             selectedKasse.increaseQueueLength();
             System.err.println(getName() + " can eat");
