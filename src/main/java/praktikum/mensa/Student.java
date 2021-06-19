@@ -19,7 +19,8 @@ public class Student extends Thread {
         while (!isInterrupted()) {   // while (!isInterrupted()) {
             try {
 //                System.err.println(this.name + " wanna eat");
-                enter();
+                var k = enter();
+                exit(k);
                 // enter will be locked until we can pay
                 // payment will be done in Kasse thread
                 eat(); // уйти кушать
@@ -28,18 +29,28 @@ public class Student extends Thread {
                 return; // more reliable than check isInterrupted()
             }
         }
-
     }
 
-
-    private void enter() throws InterruptedException {
+    private Kasse enter() throws InterruptedException {
+        final Kasse[] k = {null};
         studentLock.lockInterruptibly();
         try {
             mensa.chooseKasse().ifPresent(selectedKasse -> {
                 System.err.println(getName() + " is in queue on Kasse " + selectedKasse.getName());
                 selectedKasse.increaseQueueLength();
                 System.err.println(getName() + " can eat");
+                k[0] = selectedKasse;
             });
+        } finally {
+            studentLock.unlock();
+        }
+        return k[0];
+    }
+
+    private void exit(Kasse kasse) throws InterruptedException {
+        studentLock.lockInterruptibly();
+        try {
+            kasse.decreaseQueueLength();
         } finally {
             studentLock.unlock();
         }
