@@ -17,7 +17,7 @@ public class Mensa {
     }
 
     public Kasse chooseKasse() {
-        Kasse minKasse = allKasse.get(0);
+        var minKasse = allKasse.get(0);
         for (int i = 0; i < allKasse.size(); i++) {
             if (allKasse.get(i).queueLength() < minKasse.queueLength()) {
                 minKasse = allKasse.get(i);
