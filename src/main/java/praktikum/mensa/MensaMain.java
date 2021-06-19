@@ -8,10 +8,9 @@ import java.util.stream.IntStream;
 
 public class MensaMain {
     public static void main(String[] args) {
-        int numStudents = 20;
         var mensa = new Mensa(3);
 
-        var students = createStudents(numStudents, mensa);
+        var students = createStudents(20, mensa);
         startStudents(students);
 
 //        for (int i = 0; i < numStudents; i++) {
