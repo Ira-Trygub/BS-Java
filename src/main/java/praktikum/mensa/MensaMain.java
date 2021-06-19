@@ -33,9 +33,7 @@ public class MensaMain {
 
 
     static void startStudents(List<Student> students) {
-        for (var s : students) {
-            s.start();
-        }
+        students.forEach(Student::start);
     }
 
 
