@@ -18,7 +18,7 @@ public class Mensa {
                         .collect(Collectors.toList());
     }
 
-    public Optional<Kasse> chooseKasse() {
+    public Optional<Kasse> chooseKasse() { // TODO: 19.06.21 lock before chooseKasse 
         return allKasse
                 .stream()
                 .min(Comparator.comparing(Kasse::getQueueLength));
