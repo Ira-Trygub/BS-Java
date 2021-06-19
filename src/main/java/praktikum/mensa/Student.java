@@ -23,7 +23,7 @@ public class Student extends Thread {
                 eat(); // уйти кушать
             } catch (InterruptedException e) {
                 System.err.println(getName() + " stop");
-                return;
+                return; // more reliable than check isInterrupted()
             }
         }
 
