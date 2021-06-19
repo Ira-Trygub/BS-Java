@@ -16,7 +16,7 @@ public class Mensa {
                         .collect(Collectors.toList());
     }
 
-    public Kasse chooseKasse(Student s) throws InterruptedException {
+    public Kasse chooseKasse(Student s) {
         Kasse minKasse = allKasse.get(0);
         for (int i = 0; i < allKasse.size(); i++) {
             if (allKasse.get(i).queueLength() < minKasse.queueLength()) {
