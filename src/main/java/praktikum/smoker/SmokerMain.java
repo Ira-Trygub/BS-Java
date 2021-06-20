@@ -6,14 +6,14 @@ import java.util.stream.IntStream;
 
 public class SmokerMain {
     public static void main(String[] args) {
-        int dealNum = 2;
+        int dealerNum = 2;
 
         var table = new Table();
         var smokers = List.of(new Smoker("PapierSmoker", Stuff.PAPIER, table),
                 new Smoker("TabakSmoker", Stuff.TABAK, table),
                 new Smoker("StreichhoelerSmoker", Stuff.STREICHHOELZER, table));
 
-        var dealers = createDealers(dealNum, table);
+        var dealers = createDealers(dealerNum, table);
         startAllThreads(smokers, dealers);
         pauseMainThread(5000);
         interruptAllThreads(smokers, dealers);
