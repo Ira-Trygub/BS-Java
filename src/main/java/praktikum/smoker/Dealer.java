@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Dealer {
-    final Thread thread;
+public class Dealer extends Thread{
     String name;
     Table table;
 
@@ -16,7 +15,7 @@ public class Dealer {
 
 
 //
-        thread = new Thread(() -> {
+       public void run() {
             while (true) {
                 try {
                     putStuff(table);
@@ -24,9 +23,9 @@ public class Dealer {
                     return;
                 }
             }
-        });
+        };
 
-        thread.start();
+
     }
 
     public void putStuff(Table table) throws InterruptedException {
@@ -37,7 +36,7 @@ public class Dealer {
     }
 
     public void interrupt() {
-        thread.interrupt();
+        this.interrupt();
     }
 }
 
