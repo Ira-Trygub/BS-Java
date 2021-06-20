@@ -9,9 +9,11 @@ public class SmokerMain {
         int dealerNum = 2;
 
         var table = new Table();
-        var smokers = List.of(new Smoker("PapierSmoker", Stuff.PAPIER, table),
+        var smokers = List.of(
+                new Smoker("PapierSmoker", Stuff.PAPIER, table),
                 new Smoker("TabakSmoker", Stuff.TABAK, table),
-                new Smoker("StreichhoelerSmoker", Stuff.STREICHHOELZER, table));
+                new Smoker("StreichhoelerSmoker", Stuff.STREICHHOELZER, table)
+        );
 
         var dealers = createDealers(dealerNum, table);
         startAllThreads(smokers, dealers);
