@@ -21,8 +21,8 @@ public class SmokerMain {
         interruptAllThreads(smokers, dealers);
     }
 
-    static List<Dealer> createDealers(int dealMaxNum, Table table) {
-        return IntStream.range(0, dealMaxNum).boxed().map(i -> new Dealer("dealer" + i, table)).collect(Collectors.toList());
+    static List<Dealer> createDealers(int dealerNum, Table table) {
+        return IntStream.range(0, dealerNum).boxed().map(i -> new Dealer("dealer" + i, table)).collect(Collectors.toList());
     }
 
 
