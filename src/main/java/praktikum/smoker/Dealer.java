@@ -16,14 +16,15 @@ public class Dealer extends Thread {
     public void run() {
         while (true) {
             try {
-                table.offer(getStuf());
+                table.offer(this);
             } catch (InterruptedException e) {
                 return;
             }
         }
     }
 
-    private List<Stuff> getStuf() {
+    public List<Stuff> getStuf() {
+        System.err.println(name + " offered");
         List<Stuff> newItems = new ArrayList<>(Arrays.asList(Stuff.values()));
         newItems.remove((int) ((Math.random() * 3)));
         return newItems;

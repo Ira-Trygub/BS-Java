@@ -16,13 +16,20 @@ public class Smoker extends Thread {
         while (true) {
             try {
                 System.err.println(name + "  is waiting" + ".".repeat((int) ((Math.random() * (20 - 2)) + 2)));
-                table.acquireStuff(has);
-                System.err.println(name + "  is smoking" + "~".repeat((int) ((Math.random() * (50 - 2)) + 2)));
+                table.acquireStuff(this);
                 Thread.sleep((int) ((Math.random() * (1000 - 100)) + 100));
                 System.err.println(name + "  finished smoking!");
             } catch (InterruptedException e) {
                 return;
             }
         }
+    }
+
+    public void smoke() {
+        System.err.println(name + "  is smoking" + "~".repeat((int) ((Math.random() * (50 - 2)) + 2)));
+    }
+
+    public Stuff getHas() {
+        return has;
     }
 }
