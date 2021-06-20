@@ -11,7 +11,7 @@ public class Table {
         items = new LinkedList<>();
     }
 
-    public synchronized void offer(Dealer d) throws InterruptedException {
+    public synchronized void produce(Dealer d) throws InterruptedException {
         while (!items.isEmpty()) wait();
 
         items.addAll(d.getStuf());

@@ -16,7 +16,7 @@ public class Dealer extends Thread {
     public void run() {
         while (true) {
             try {
-                table.offer(this);
+                table.produce(this);
             } catch (InterruptedException e) {
                 return;
             }
