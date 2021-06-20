@@ -1,77 +1,31 @@
 package praktikum.smoker;
 
-import java.util.*;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Table {
-    private final List<Stuff> items;
-    private final int itemMaxNumber;
+    List<Stuff> items;
 
-    public Table(int itemMaxNumber) {
-
+    public Table() {
         items = new LinkedList<>();
-        this.itemMaxNumber = itemMaxNumber;
-    }
-//prüfen ob Tisch leer gemacht ist
-
-    public synchronized void produce(List<Stuff> onTable) throws InterruptedException {
-        while (items.containsAll(onTable)) {
-            wait();
-
-
-        }
-        items.removeAll(onTable);
-        notifyAll();
-
     }
 
     public synchronized void offer(List<Stuff> newItems) throws InterruptedException {
-        while (items.size() == itemMaxNumber) {
-            wait();
-        }
+        while (!items.isEmpty()) wait();
+
         items.addAll(newItems);
         notifyAll();
+    }
 
+    // prüfen ob Tisch leer gemacht ist
+    public synchronized void acquireStuff(Stuff has) throws InterruptedException {
+        var need = new ArrayList<>(List.of(Stuff.values()));
+        need.remove(has);
 
+        while (!items.containsAll(need)) wait();
+
+        items.removeAll(need);
+        notifyAll();
     }
 }
-
-//    LinkedList<Dealer> dealerList;
-//    LinkedList<Smoker> smokerList;
-//    int deal_max_num; //максимальное количество диллеров
-//    int smo_max_num; //максимальное количество курильщиков
-//    static ArrayList<Stuff> stuffList; // бумага, табак, спички вместе
-//
-//    public Table() {
-//
-//        var tableList = new LinkedList();
-//        ArrayList<Stuff> stuffList = new ArrayList<Stuff>() {{ add(new Papier()); add( new Tabak()); add( new Streichhoelzer());}};
-//    }
-//
-//    public int getDeal_max_num() {
-//        return deal_max_num;
-//    }
-//
-//    public int getSmo_max_num() {
-//        return smo_max_num;
-//    }
-//
-//    public ArrayList<Stuff> getStuffList() {
-//        return stuffList;
-//    }
-
-
-//    public synchronized void putStuff(Dealer dealer) throws InterruptedException {
-//
-//        while (tableList.size() == deal_max_num) {
-//            wait();
-//        }
-//        dealer.giveStuff();
-//        System.err.println();
-//        this.notifyAll();
-//
-//    }
-
-//}

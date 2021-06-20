@@ -1,33 +1,22 @@
 package praktikum.smoker;
 
-import praktikum.mensa.Mensa;
-import praktikum.mensa.Student;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SmokerMain {
-
-
     public static void main(String[] args) {
         int dealNum = 2;
 
-        var table = new Table(2);
-        var smokers = List.of(new Smoker("TabakSmoker", List.of(Stuff.PAPIER, Stuff.STREICHHOELZER), table),
-                new Smoker("PapierSmoker", List.of(Stuff.TABAK, Stuff.STREICHHOELZER), table),
-                new Smoker("StreichhoelerSmoker", List.of(Stuff.PAPIER, Stuff.TABAK), table));
+        var table = new Table();
+        var smokers = List.of(new Smoker("PapierSmoker", Stuff.PAPIER, table),
+                new Smoker("TabakSmoker", Stuff.TABAK, table),
+                new Smoker("StreichhoelerSmoker", Stuff.STREICHHOELZER, table));
 
         var dealers = createDealers(dealNum, table);
-        pauseMainThread();
+        startAllThreads(smokers, dealers);
+        pauseMainThread(5000);
         interruptAllThreads(smokers, dealers);
-
-//
-
-//        int smo_max_num = 3;
-//        Table table = new Table();
-//        createDealers();
-//        createSmokers();
     }
 
     static List<Dealer> createDealers(int dealMaxNum, Table table) {
@@ -35,25 +24,20 @@ public class SmokerMain {
     }
 
 
-    static void pauseMainThread() {
+    static void pauseMainThread(long millis) {
         try {
-            Thread.sleep(30000);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
         }
     }
 
-
-    static void interruptAllThreads( List<Smoker> smokers, List<Dealer> dealers) {
-        for (var s : smokers) {
-            s.interrupt();
-        }
-        for (var d : dealers) {
-            d.interrupt();
-        }
+    static void startAllThreads(List<Smoker> smokers, List<Dealer> dealers) {
+        smokers.forEach(Thread::start);
+        dealers.forEach(Thread::start);
     }
 
-//
-//    static List<Smoker> createSmokers() {
-//        return IntStream.range(0,smo_max_num).boxed().map(i -> new Smoker("dealer" + i, table)).collect(Collectors.toList());
-//    }
+    static void interruptAllThreads(List<Smoker> smokers, List<Dealer> dealers) {
+        smokers.forEach(Thread::interrupt);
+        dealers.forEach(Thread::interrupt);
+    }
 }
