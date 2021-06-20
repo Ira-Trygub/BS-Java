@@ -11,23 +11,22 @@ public class Table {
         items = new LinkedList<>();
     }
 
-    public synchronized void produce(Dealer d) throws InterruptedException {
+    public synchronized void produce(Dealer dealer) throws InterruptedException {
         while (!items.isEmpty()) wait();
 
-        items.addAll(d.getStuf());
+        items.addAll(dealer.getStuff());
         notifyAll();
     }
 
-    // prüfen ob Tisch leer gemacht ist
-    public synchronized void acquireStuff(Smoker s) throws InterruptedException {
+    public synchronized void consume(Smoker smoker) throws InterruptedException {
         var need = new ArrayList<>(List.of(Stuff.values()));
-        need.remove(s.getHas());
+        need.remove(smoker.getHas());
 
         while (!items.containsAll(need)) wait();
 
         items.removeAll(need);
 
-        s.smoke();
+        smoker.smoke();
 
         notifyAll();
     }

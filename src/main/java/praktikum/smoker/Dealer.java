@@ -23,7 +23,7 @@ public class Dealer extends Thread {
         }
     }
 
-    public List<Stuff> getStuf() {
+    public List<Stuff> getStuff() {
         System.err.println(name + " offered");
         List<Stuff> newItems = new ArrayList<>(Arrays.asList(Stuff.values()));
         newItems.remove((int) ((Math.random() * 3)));

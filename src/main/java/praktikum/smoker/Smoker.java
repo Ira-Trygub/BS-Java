@@ -16,7 +16,7 @@ public class Smoker extends Thread {
         while (true) {
             try {
                 System.err.println(name + "  is waiting" + ".".repeat((int) ((Math.random() * (20 - 2)) + 2)));
-                table.acquireStuff(this);
+                table.consume(this);
                 Thread.sleep((int) ((Math.random() * (1000 - 100)) + 100));
                 System.err.println(name + "  finished smoking!");
             } catch (InterruptedException e) {
