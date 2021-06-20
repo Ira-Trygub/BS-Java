@@ -26,7 +26,7 @@ public class Table {
 
         items.removeAll(need);
 
-        smoker.smoke();
+        smoker.canStartSmoking();
 
         notifyAll();
     }

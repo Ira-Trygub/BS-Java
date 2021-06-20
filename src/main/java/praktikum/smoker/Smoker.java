@@ -17,16 +17,20 @@ public class Smoker extends Thread {
             try {
                 System.err.println(name + "  is waiting" + ".".repeat((int) ((Math.random() * (20 - 2)) + 2)));
                 table.consume(this);
-                Thread.sleep((int) ((Math.random() * (1000 - 100)) + 100));
-                System.err.println(name + "  finished smoking!");
+                smoke();
             } catch (InterruptedException e) {
                 return;
             }
         }
     }
 
-    public void smoke() {
-        System.err.println(name + "  is smoking" + "~".repeat((int) ((Math.random() * (50 - 2)) + 2)));
+    public void canStartSmoking() {
+        System.err.println(name + "  is starting to smoke" + "~".repeat((int) ((Math.random() * (50 - 2)) + 2)));
+    }
+
+    private void smoke() throws InterruptedException {
+        Thread.sleep((int) ((Math.random() * (1000 - 100)) + 100));
+        System.err.println(name + "  finished smoking!");
     }
 
     public Stuff getHas() {
