@@ -17,8 +17,9 @@ public class Table {
 //prüfen ob Tisch leer gemacht ist
 
     public synchronized void produce(List<Stuff> onTable) throws InterruptedException {
-        while (!items.containsAll(onTable)) {
+        while (items.containsAll(onTable)) {
             wait();
+
 
         }
         items.removeAll(onTable);
